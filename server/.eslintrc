@@ -1,0 +1,15 @@
+{
+    "extends": "../.eslintrc",
+    "env": {
+        "node": true
+    },
+    "parserOptions": {
+        "sourceType": "module"
+    },
+    "rules": {
+      "no-sync": 0,
+      "no-console": ["error", { "allow": ["warn", "error", "log"] }],
+      "consistent-this": [ 2, "self" ],
+      "space-before-function-paren": 0
+    }
+}

@@ -1,0 +1,30 @@
+<div class="container">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Image</th>
+        <th>Effect</th>
+        <th>Submitted At</th>
+        <th class="text-right">Tools</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="submission in $ctrl.submissions" ng-class="{'danger':!submission.active}">
+        <td>
+          <a href="#" ng-click="$ctrl.showImage(submission, 'large')">
+            <img ng-src="http://localhost:3000{{submission.file.path}}/{{submission.file.versions.thumb}}" class="img-responsive" width="100">
+          </a>
+        </td>
+        <td>
+          <a href="#" ng-click="$ctrl.showImage(submission, 'lines')">
+            <img ng-src="http://localhost:3000{{submission.file.path}}/{{submission.file.versions.linesThumb}}" class="img-responsive" width="100">
+          </a>
+        </td>
+        <td>{{submission.createdAt | date : 'medium'}}</td>
+        <td class="text-right">
+          <button type="button" class="btn btn-xs btn-danger" ng-click="$ctrl.deleteSubmission(submission)">destroy</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

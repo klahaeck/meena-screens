@@ -1,0 +1,14 @@
+{
+    "extends": "../.eslintrc",
+    "env": {
+        "browser": true,
+        "commonjs": true
+    },
+    "parserOptions": {
+        "sourceType": "module"
+    },
+    "rules": {
+      "no-console": ["error", { "allow": ["warn", "error", "log"] }],
+      "no-trailing-spaces": 0
+    }
+}

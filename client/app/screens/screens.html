@@ -1,0 +1,20 @@
+<div class="container">
+  <button type="button" class="btn btn-primary" ng-click="$ctrl.addScreen()">Add Screen</button>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th class="text-right">Tools</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="screen in $ctrl.screens" ng-class="{'danger':!screen.active}">
+        <td><a ui-sref="screens-detail({id:screen._id})">{{screen.name || screen._id}}</a></td>
+        <td class="text-right">
+            <button type="button" class="btn btn-xs btn-warning" ng-click="$ctrl.editScreen(screen)">edit</button>
+          <button type="button" class="btn btn-xs btn-danger" ng-click="$ctrl.deleteScreen(screen)">destroy</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
