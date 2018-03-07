@@ -5,7 +5,9 @@ public
 .idea
 client/bower_components
 client/uploads/**/*
+!client/uploads/index.html
 client/tmp/**/*
+!client/tmp/index.html
 client/app.html
 dist
 /server/config/local.env.js
