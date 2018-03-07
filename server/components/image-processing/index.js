@@ -78,7 +78,7 @@ function writeFile(stdout, destPath, imagePath, resolve, reject, cb) {
 export function process(file) {
   const now = new Date();
   const dirName = now.getTime();
-  const dirPath = `uploads/images/${dirName}`;
+  const dirPath = `uploads/${dirName}`;
 
   const fileName = sanitize(file.name);
   const largeName = `large-${fileName}`;
