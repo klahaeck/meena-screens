@@ -466,6 +466,8 @@ gulp.task('build', cb => {
         [
             'copy:extras',
             'copy:assets',
+            'copy:tmp',
+            'copy:uploads',
             'copy:fonts:dist',
             'copy:server',
             'webpack:dist'
@@ -503,9 +505,7 @@ gulp.task('copy:extras', () => {
     return gulp.src([
         `${clientPath}/favicon.ico`,
         `${clientPath}/robots.txt`,
-        `${clientPath}/.htaccess`,
-        `${clientPath}/tmp`,
-        `${clientPath}/uploads`
+        `${clientPath}/.htaccess`
     ], { dot: true })
         .pipe(gulp.dest(`${paths.dist}/${clientPath}`));
 });
@@ -542,6 +542,21 @@ gulp.task('copy:fonts:dist', () => {
 gulp.task('copy:assets', () => {
     return gulp.src([paths.client.assets, '!' + paths.client.images])
         .pipe(gulp.dest(`${paths.dist}/${clientPath}/assets`));
+});
+
+gulp.task('copy:tmp', () => {
+  return gulp.src([
+    `${clientPath}/tmp/**/*.html`,
+    `${clientPath}/uploads/**/*.html`
+  ])
+    .pipe(gulp.dest(`${paths.dist}/${clientPath}/tmp`));
+});
+
+gulp.task('copy:uploads', () => {
+  return gulp.src([
+    `${clientPath}/uploads/**/*.html`
+  ])
+    .pipe(gulp.dest(`${paths.dist}/${clientPath}/uploads`));
 });
 
 gulp.task('copy:server', () => {
