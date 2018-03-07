@@ -4,7 +4,7 @@ public
 .sass-cache
 .idea
 client/bower_components
-client/uploads/images/**/*
+client/uploads/**/*
 client/tmp/**/*
 client/app.html
 dist
