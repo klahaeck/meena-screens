@@ -5,7 +5,7 @@ import angular from 'angular';
 /**
  * The Util service is for thin, globally reusable, utility functions
  */
-export function UtilService($window) {
+export function UtilService($window, $location) {
   'ngInject';
 
   var Util = {
@@ -61,6 +61,17 @@ export function UtilService($window) {
         return hostnameCheck && protocolCheck && portCheck;
       });
       return origins.length >= 1;
+    },
+
+    getAssetPrefix() {
+      const protocal = $location.protocol();
+      const host = $location.host();
+      const port = $location.port();
+      if(host === 'localhost') {
+        return '/';
+      } else {
+        return 'https://s3.amazonaws.com/meena-screens/';
+      }
     }
   };
 

@@ -4,7 +4,7 @@ import routing from './main.routes';
 
 export class MainController {
   /*@ngInject*/
-  constructor($http, $scope, Upload) {
+  constructor($http, Upload) {
     this.$http = $http;
     this.Upload = Upload;
     this.submitted = false;

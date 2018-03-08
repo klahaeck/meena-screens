@@ -1,17 +1,17 @@
 /**
  * Using Rails-like standard naming convention for endpoints.
- * GET     /api/submissions              ->  index
- * POST    /api/submissions              ->  create
- * GET     /api/submissions/:id          ->  show
- * PUT     /api/submissions/:id          ->  upsert
- * PATCH   /api/submissions/:id          ->  patch
- * DELETE  /api/submissions/:id          ->  destroy
+ * GET     /api/idles              ->  index
+ * POST    /api/idles              ->  create
+ * GET     /api/idles/:id          ->  show
+ * PUT     /api/idles/:id          ->  upsert
+ * PATCH   /api/idles/:id          ->  patch
+ * DELETE  /api/idles/:id          ->  destroy
  */
 
 'use strict';
 
 import jsonpatch from 'fast-json-patch';
-import Submission from './submission.model';
+import Idle from './idle.model';
 import { process } from '../../components/image-processing';
 
 function respondWithResult(res, statusCode) {
@@ -65,55 +65,59 @@ function handleError(res, statusCode) {
   };
 }
 
-// Gets a list of Submissions
+// Gets a list of Idles
 export function index(req, res) {
-  return Submission.find().exec()
+  return Idle.find().exec()
     .then(respondWithResult(res))
     .catch(handleError(res));
 }
 
-// Gets a single Submission from the DB
+// Gets a single Idle from the DB
 export function show(req, res) {
-  return Submission.findById(req.params.id).exec()
+  return Idle.findById(req.params.id).exec()
     .then(handleEntityNotFound(res))
     .then(respondWithResult(res))
     .catch(handleError(res));
 }
 
-// Creates a new Submission in the DB
+// Creates a new Idle in the DB
 export function create(req, res) {
-  process(req.files.file)
-    .then(submission => Submission.create(submission))
+  return process(req.files.file)
+    .then(idle => Idle.create(idle))
     .then(respondWithResult(res, 201))
     .catch(handleError(res));
+
+  // return Idle.create(req.body)
+  //   .then(respondWithResult(res, 201))
+  //   .catch(handleError(res));
 }
 
-// Upserts the given Submission in the DB at the specified ID
+// Upserts the given Idle in the DB at the specified ID
 export function upsert(req, res) {
   if(req.body._id) {
     Reflect.deleteProperty(req.body, '_id');
   }
-  return Submission.findOneAndUpdate({_id: req.params.id}, req.body, {new: true, upsert: true, setDefaultsOnInsert: true, runValidators: true}).exec()
+  return Idle.findOneAndUpdate({_id: req.params.id}, req.body, {new: true, upsert: true, setDefaultsOnInsert: true, runValidators: true}).exec()
 
     .then(respondWithResult(res))
     .catch(handleError(res));
 }
 
-// Updates an existing Submission in the DB
+// Updates an existing Idle in the DB
 export function patch(req, res) {
   if(req.body._id) {
     Reflect.deleteProperty(req.body, '_id');
   }
-  return Submission.findById(req.params.id).exec()
+  return Idle.findById(req.params.id).exec()
     .then(handleEntityNotFound(res))
     .then(patchUpdates(req.body))
     .then(respondWithResult(res))
     .catch(handleError(res));
 }
 
-// Deletes a Submission from the DB
+// Deletes a Idle from the DB
 export function destroy(req, res) {
-  return Submission.findById(req.params.id).exec()
+  return Idle.findById(req.params.id).exec()
     .then(handleEntityNotFound(res))
     .then(removeEntity(res))
     .catch(handleError(res));

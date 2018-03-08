@@ -1,9 +1,9 @@
 'use strict';
 const angular = require('angular');
 const uiRouter = require('angular-ui-router');
-import routes from './submissions.routes';
+import routes from './idles.routes';
 
-export class SubmissionsController {
+export class IdlesComponent {
   /*@ngInject*/
   constructor($window, $http, $timeout, $scope, socket, $uibModal, Upload, Util) {
     this.$window = $window;
@@ -15,20 +15,20 @@ export class SubmissionsController {
     this.Util = Util;
     this.submitted = false;
     this.progressPercentage = 0;
-    this.submissions = [];
+    this.idles = [];
 
     this.assetPrefix = Util.getAssetPrefix();
 
     $scope.$on('$destroy', function() {
-      socket.unsyncUpdates('submissions');
+      socket.unsyncUpdates('idles');
     });
   }
 
   $onInit() {
-    this.$http.get('/api/submissions')
+    this.$http.get('/api/idles')
       .then(response => {
-        this.submissions = response.data;
-        this.socket.syncUpdates('submission', this.submissions);
+        this.idles = response.data;
+        this.socket.syncUpdates('idle', this.idles);
       });
   }
 
@@ -36,13 +36,13 @@ export class SubmissionsController {
     console.log('upload');
     this.submitted = true;
     this.Upload.upload({
-      url: '/api/submissions',
+      url: '/api/idles',
       data: { file }
     })
     .then(() => {
       this.msg = {
         class: 'success',
-        text: 'Your photo has been uploaded!'
+        text: 'Your idle image has been uploaded!'
       };
       this.$timeout(() => {
         this.submitted = false;
@@ -69,13 +69,13 @@ export class SubmissionsController {
     });
   }
 
-  deleteSubmission(submission) {
+  deleteIdle(idle) {
     if(this.$window.confirm('Are you sure?')) {
-      this.$http.delete(`/api/submissions/${submission._id}`);
+      this.$http.delete(`/api/idles/${idle._id}`);
     }
   }
 
-  showImage(submission, version) {
+  showImage(idle, version) {
     var modalInstance = this.$uibModal.open({
       template: require('../../components/modal-image/modal-image.html'),
       controller: ['$scope', 'imagePath', function($scope, imagePath) {
@@ -85,7 +85,7 @@ export class SubmissionsController {
       resolve: {
         imagePath() {
           // console.log(`${submission.file.path}/${submission.file.versions[version]}`);
-          return `${submission.file.path}/${submission.file.versions[version]}`;
+          return `${idle.file.path}/${idle.file.versions[version]}`;
         }
       }
     });
@@ -95,10 +95,10 @@ export class SubmissionsController {
   }
 }
 
-export default angular.module('screensApp.submissions', [uiRouter])
+export default angular.module('screensApp.idles', [uiRouter])
   .config(routes)
-  .component('submissions', {
-    template: require('./submissions.html'),
-    controller: SubmissionsController
+  .component('idles', {
+    template: require('./idles.html'),
+    controller: IdlesComponent
   })
   .name;

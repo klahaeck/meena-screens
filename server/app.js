@@ -10,6 +10,7 @@ mongoose.Promise = require('bluebird');
 import config from './config/environment';
 import http from 'http';
 import seedDatabaseIfNeeded from './config/seed';
+import { start as startSchedule } from './components/schedule';
 // var nohm = require('nohm').Nohm;
 // var redisClient = require('redis').createClient();
 
@@ -42,6 +43,10 @@ require('./routes').default(app);
 function startServer() {
   app.angularFullstack = server.listen(config.port, config.ip, function() {
     console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
+    startSchedule(function(err) {
+      if(err) console.log(err);
+      console.log('Started schedule');
+    });
   });
 }
 

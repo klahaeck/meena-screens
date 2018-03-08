@@ -14,6 +14,7 @@ export class NavbarComponent {
     this.menu = [
       // { title: 'Upload', state: 'main' },
       { title: 'Submissions', state: 'submissions' },
+      { title: 'Idle', state: 'idles' },
       { title: 'Screens', state: 'screens' }
     ];
   }

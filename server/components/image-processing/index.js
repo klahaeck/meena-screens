@@ -47,6 +47,7 @@ function writeFile(stdout, destPath, imagePath, resolve, reject, cb) {
       if(typeof resolve === 'function') {
         resolve();
       }
+      return null;
     });
   } else {
     if(!fs.existsSync(destPath)) {

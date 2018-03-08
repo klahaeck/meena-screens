@@ -24,6 +24,7 @@ import admin from './admin';
 import navbar from '../components/navbar/navbar.component';
 import footer from '../components/footer/footer.component';
 import main from './main/main.component';
+import idles from './idles/idles.component';
 import submissions from './submissions/submissions.component';
 import screens from './screens/screens.component';
 import constants from './app.constants';
@@ -33,7 +34,7 @@ import socket from '../components/socket/socket.service';
 import './app.scss';
 
 angular.module('screensApp', [ngAnimate, ngCookies, ngResource, ngSanitize, 'btford.socket-io', uiRouter,
-  uiBootstrap, _Auth, account, admin, 'validation.match', LocalStorageModule, ngFileUpload, navbar, footer, main, submissions, screens, constants,
+  uiBootstrap, _Auth, account, admin, 'validation.match', LocalStorageModule, ngFileUpload, navbar, footer, main, idles, submissions, screens, constants,
   socket, util
 ])
   .config(routeConfig)

@@ -22,8 +22,14 @@
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  mix-blend-mode: darken;
+  mix-blend-mode: screen;
   opacity: 1;
+}
+
+.layer-bg {
+  mix-blend-mode: normal;
+  opacity: 1;
+  background: #000000;
 }
 
 .layer.ng-animate {
