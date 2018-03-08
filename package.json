@@ -33,6 +33,7 @@
     "express-session": "^1.11.3",
     "fast-json-patch": "^1.0.0",
     "font-awesome": ">=4.1.0",
+    "fs-extra": "^5.0.0",
     "gm": "^1.23.1",
     "gsap": "^1.20.4",
     "imagemagick": "^0.1.3",

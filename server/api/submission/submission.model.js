@@ -1,8 +1,11 @@
 'use strict';
 
 import mongoose from 'mongoose';
+import config from '../../config/environment';
 import {registerEvents} from './submission.events';
 import Screen from '../screen/screen.model';
+import fs from 'fs-extra';
+import { client, bucketName } from '../../components/cloudstorage';
 
 var SubmissionSchema = new mongoose.Schema({
   name: String,
@@ -36,7 +39,7 @@ SubmissionSchema.pre('save', function(next) {
         return null;
       } else {
         Screen.count().exec(function (err, count) {
-          if(err) console.log(err);
+          if(err) console.warn(err);
           var random = Math.floor(Math.random() * count);
 
           Screen.findOne().skip(random)
@@ -45,14 +48,32 @@ SubmissionSchema.pre('save', function(next) {
               Screen.update({ _id: randomScreen._id }, { $push: { submissions: self._id } }).then(next);
             })
             .catch(function(err) {
-              console.log(err);
+              console.warn(err);
             });
         });
       }
     })
     .catch(function(err) {
-      console.log(err);
+      console.warn(err);
     });
+});
+
+SubmissionSchema.post('remove', function(doc) {
+  if(config.env === 'production') {
+    client.removeFile(bucketName, `${doc.file.path}/${doc.file.name}`, function(err) {
+      if(err) console.warn(err);
+    });
+    for (var key in doc.file.versions) {
+      if (doc.file.versions.hasOwnProperty(key)) {
+        const value = doc.file.versions[key];
+        client.removeFile(bucketName, `${doc.file.path}/${value}`, function(err) {
+          if(err) console.warn(err);
+        });
+      }
+    }
+  } else {
+    fs.remove(`${config.root}/client/${doc.file.path}`);
+  }
 });
 
 registerEvents(SubmissionSchema);

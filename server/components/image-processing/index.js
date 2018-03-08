@@ -2,6 +2,7 @@ import fs from 'fs';
 import sanitize from 'sanitize-filename';
 import tmp from 'tmp';
 import config from '../../config/environment';
+import { client, bucketName } from '../cloudstorage';
 
 const isProduction = config.env === 'production';
 
@@ -10,14 +11,6 @@ const isProduction = config.env === 'production';
 
 const im = require('imagemagick');
 const gm = require('gm').subClass({imageMagick: true});
-
-const client = require('pkgcloud').storage.createClient({
-  provider: 'amazon',
-  keyId: config.aws.accessKey, // access key id
-  key: config.aws.secretKey, // secret key
-  region: config.aws.region // region
-});
-const bucketName = 'meena-screens';
 
 const thumbWidth = 150;
 const largeWidth = 1440;
