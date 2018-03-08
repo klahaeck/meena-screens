@@ -1,7 +1,10 @@
 'use strict';
 
 import mongoose from 'mongoose';
+import config from '../../config/environment';
 import {registerEvents} from './idle.events';
+import fs from 'fs-extra';
+import { client, bucketName } from '../../components/cloudstorage';
 
 var IdleSchema = new mongoose.Schema({
   name: String,
@@ -22,6 +25,24 @@ var IdleSchema = new mongoose.Schema({
   }
 }, {
   timestamps: true
+});
+
+IdleSchema.post('remove', function(doc) {
+  if(config.env === 'production') {
+    client.removeFile(bucketName, `${doc.file.path}/${doc.file.name}`, function(err) {
+      if(err) console.warn(err);
+    });
+    for (var key in doc.file.versions) {
+      if (doc.file.versions.hasOwnProperty(key)) {
+        const value = doc.file.versions[key];
+        client.removeFile(bucketName, `${doc.file.path}/${value}`, function(err) {
+          if(err) console.warn(err);
+        });
+      }
+    }
+  } else {
+    fs.remove(`${config.root}/client/${doc.file.path}`);
+  }
 });
 
 registerEvents(IdleSchema);

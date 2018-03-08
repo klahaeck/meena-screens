@@ -33,7 +33,6 @@ export class IdlesComponent {
   }
 
   upload(file) {
-    console.log('upload');
     this.submitted = true;
     this.Upload.upload({
       url: '/api/idles',

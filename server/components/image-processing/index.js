@@ -2,6 +2,7 @@ import fs from 'fs';
 import sanitize from 'sanitize-filename';
 import tmp from 'tmp';
 import config from '../../config/environment';
+import uuid from 'node-uuid';
 import { client, bucketName } from '../cloudstorage';
 
 const isProduction = config.env === 'production';
@@ -70,8 +71,7 @@ function writeFile(stdout, destPath, imagePath, resolve, reject, cb) {
 }
 
 export function process(file) {
-  const now = new Date();
-  const dirName = now.getTime();
+  const dirName = uuid.v4();
   const dirPath = `uploads/${dirName}`;
 
   const fileName = sanitize(file.name);

@@ -33,7 +33,6 @@ export class SubmissionsController {
   }
 
   upload(file) {
-    console.log('upload');
     this.submitted = true;
     this.Upload.upload({
       url: '/api/submissions',
