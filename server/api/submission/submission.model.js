@@ -7,6 +7,8 @@ import Screen from '../screen/screen.model';
 import fs from 'fs-extra';
 import { client, bucketName } from '../../components/cloudstorage';
 
+const MAX_SUBMISSIONS = 4;
+
 var SubmissionSchema = new mongoose.Schema({
   name: String,
   active: {
@@ -25,8 +27,17 @@ var SubmissionSchema = new mongoose.Schema({
     ref: 'Screen'
   }
 }, {
-  timestamps: true
+  timestamps: true,
+  usePushEach: true
 });
+
+function saveScreen(screen, submissionId) {
+  if(screen.submissions.length >= MAX_SUBMISSIONS) {
+    screen.submissions.shift();
+  }
+  screen.submissions.push(submissionId);
+  return screen.save();
+}
 
 SubmissionSchema.pre('save', function(next) {
   let self = this;
@@ -35,8 +46,7 @@ SubmissionSchema.pre('save', function(next) {
     .then(function(screen) {
       if(screen) {
         self.screen = screen._id;
-        Screen.update({ _id: screen._id }, { $push: { submissions: self._id } }).then(next);
-        return null;
+        next();
       } else {
         Screen.count().exec(function (err, count) {
           if(err) console.warn(err);
@@ -45,7 +55,7 @@ SubmissionSchema.pre('save', function(next) {
           Screen.findOne().skip(random)
             .then(function(randomScreen) {
               self.screen = randomScreen._id;
-              Screen.update({ _id: randomScreen._id }, { $push: { submissions: self._id } }).then(next);
+              next();
             })
             .catch(function(err) {
               console.warn(err);
@@ -56,6 +66,28 @@ SubmissionSchema.pre('save', function(next) {
     .catch(function(err) {
       console.warn(err);
     });
+});
+
+SubmissionSchema.post('save', function(doc) {
+  Screen.findOne(doc.screen)
+    .then(function(screen) {
+      if(screen) {
+        saveScreen(screen, doc._id);
+        // Screen.update({ _id: screen._id }, { $push: { submissions: self._id } }).then(next);
+      }
+    })
+    .catch(function(err) {
+      console.warn(err);
+    });
+});
+
+SubmissionSchema.pre('remove', function(next) {
+  Screen.update(
+    { submissions : this._id}, 
+    { $pull: { submissions: this._id } },
+    { multi: true })  //if reference exists in multiple documents 
+  .exec();
+  next();
 });
 
 SubmissionSchema.post('remove', function(doc) {

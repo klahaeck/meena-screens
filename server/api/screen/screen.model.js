@@ -15,6 +15,9 @@ var ScreenSchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: 'Submission'
   }]
+}, {
+  timestamps: true,
+  usePushEach: true
 });
 
 ScreenSchema.pre('remove', function(next) {

@@ -4,6 +4,7 @@
 
 'use strict';
 
+import Screen from './screen.model';
 import ScreenEvents from './screen.events';
 
 // Model events to emit

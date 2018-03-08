@@ -13,7 +13,6 @@ SubmissionEvents.setMaxListeners(0);
 // Model events
 var events = {
   save: 'save',
-  update: 'update',
   remove: 'remove'
 };
 

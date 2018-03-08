@@ -4,6 +4,7 @@
 
 'use strict';
 
+import Screen from './screen.model';
 import {EventEmitter} from 'events';
 var ScreenEvents = new EventEmitter();
 
@@ -26,8 +27,13 @@ function registerEvents(Screen) {
 
 function emitEvent(event) {
   return function(doc) {
-    ScreenEvents.emit(`${event}:${doc._id}`, doc);
-    ScreenEvents.emit(event, doc);
+    doc.populate({
+      path: 'submissions',
+      select: 'name file'
+    }, function(err, doc) {
+      ScreenEvents.emit(`${event}:${doc._id}`, doc);
+      ScreenEvents.emit(event, doc);
+    });
   };
 }
 

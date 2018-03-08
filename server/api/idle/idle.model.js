@@ -18,14 +18,23 @@ var IdleSchema = new mongoose.Schema({
   },
   file: {
     type: mongoose.Schema.Types.Mixed
-  },
-  screen: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Screen'
   }
+  // screen: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'Screen'
+  // }
 }, {
   timestamps: true
 });
+
+// IdleSchema.pre('remove', function(next) {
+//   Screen.update(
+//     { idles : this._id}, 
+//     { $pull: { idles: this._id } },
+//     { multi: true })  //if reference exists in multiple documents 
+//   .exec();
+//   next();
+// });
 
 IdleSchema.post('remove', function(doc) {
   if(config.env === 'production') {

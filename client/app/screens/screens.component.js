@@ -86,45 +86,40 @@ export class ScreensDetailController {
     this.maxImages = 3;
 
     $scope.$on('$destroy', function() {
-      socket.socket.removeAllListeners('submission:save');
-      // destroyCanvas();
+      socket.socket.removeAllListeners('screen:save');
     });
   }
-
-  // initTimer() {
-  //   setTimeout(() => {
-  //     addImage(this.images);
-  //   }, 3000);
-  // }
 
   $onInit() {
     this.$http.get(`/api/screens/${this.$stateParams.id}`)
       .then(response => {
         this.screen = response.data;
 
-        this.$scope.images = this.screen.submissions.slice(0, this.maxImages).map(function(submission) {
-          return `${submission.file.path}/${submission.file.versions.lines}`;
-        });
+        this.setImages();
 
-        this.socket.socket.on('submission:save', submission => {
-          if (submission.screen === this.screen._id) {
+        this.socket.socket.on('screen:save', screen => {
+          if (screen._id === this.screen._id) {
+            this.screen = screen;
             this.$timeout(() => {
-              // this.$scope.images.shift();
-              this.$scope.images.push(`${submission.file.path}/${submission.file.versions.lines}`);
-              this.$scope.images.splice(0, this.$scope.images.length - this.maxImages);
-              // this.images = [...this.images, `${submission.file.path}/${submission.file.versions.lines}`];
+              this.setImages();
             }, 1000);
-          // addImage(`${submission.file.path}/${submission.file.versions.lines}`);
           }
         });
-
-        // initCanvas(this.screen.name, this.images);
-        // this.initTimer();
       });
   }
 
-  getClass(index) {
-    return `layer-${index}`;
+  setImages() {
+    const reversed = this.screen.submissions.slice().reverse();
+    this.$scope.images = this.screen.submissions.map(function(submission) {
+      const index = reversed.indexOf(submission);
+      return {path:`${submission.file.path}/${submission.file.versions.lines}`, index};
+    });
+  }
+
+  getIndexClass(image) {
+    const reversedImages = this.$scope.images.reverse();
+    const index = reversedImages.findIndex(image);
+    return `layer-image-${index}`;
   }
 }
 
