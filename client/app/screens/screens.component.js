@@ -98,14 +98,21 @@ export class ScreensDetailController {
         this.setImages();
 
         this.socket.socket.on('screen:save', screen => {
-          if (screen._id === this.screen._id) {
-            this.screen = screen;
-            this.$timeout(() => {
-              this.setImages();
-            }, 1000);
-          }
+          this.socketHandler(screen);
+        });
+        this.socket.socket.on('screen:remove', screen => {
+          this.socketHandler(screen);
         });
       });
+  }
+
+  socketHandler(screen) {
+    if (screen._id === this.screen._id) {
+      this.screen = screen;
+      this.$timeout(() => {
+        this.setImages();
+      }, 1000);
+    }
   }
 
   setImages() {

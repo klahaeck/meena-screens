@@ -82,11 +82,23 @@ SubmissionSchema.post('save', function(doc) {
 });
 
 SubmissionSchema.pre('remove', function(next) {
-  Screen.update(
-    { submissions : this._id}, 
-    { $pull: { submissions: this._id } },
-    { multi: true })  //if reference exists in multiple documents 
-  .exec();
+  // fires the screen socket event for screens
+  Screen.find({ submissions: this._id}).then(screens => {
+    screens.forEach(screen => {
+      const index = screen.submissions.indexOf(this._id);
+      if (index !== -1) {
+        screen.submissions.splice(index, 1);
+      }
+      screen.save();
+    });
+  });
+
+  // Screen.update(
+  //   { submissions : this._id}, 
+  //   { $pull: { submissions: this._id } },
+  //   { multi: true })  //if reference exists in multiple documents 
+  // .exec();
+  
   next();
 });
 

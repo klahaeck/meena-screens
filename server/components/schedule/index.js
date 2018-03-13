@@ -26,7 +26,7 @@ export function start(cb) {
             const newTimeout = setTimeout(function() {
               removeTimeout(this);
               // console.log(`show idle image with timeout: ${timeoutTime}`);
-              console.log('show idle image');
+              // console.log('show idle image');
             }, timeoutTime);
             timeouts.push(newTimeout);
           }
@@ -35,7 +35,7 @@ export function start(cb) {
             clearTimeout(timeout);
           }
           timeouts = [];
-          console.log(`recent submission at: ${submission.createdAt}`);
+          // console.log(`recent submission at: ${submission.createdAt}`);
         }
         // console.log('timeouts:', timeouts.length);
       })
