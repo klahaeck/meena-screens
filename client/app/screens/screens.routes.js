@@ -5,8 +5,8 @@ export default function($stateProvider) {
   $stateProvider
     .state('screens', {
       url: '/screens',
-      template: '<screens></screens>',
-      authenticate: 'admin'
+      template: '<screens></screens>'
+      // authenticate: 'admin'
     })
     .state('screens-detail', {
       url: '/screens/:id',

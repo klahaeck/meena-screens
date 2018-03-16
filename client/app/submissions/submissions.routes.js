@@ -6,6 +6,6 @@ export default function($stateProvider) {
     .state('submissions', {
       url: '/images',
       template: '<submissions></submissions>',
-      authenticate: 'admin'
+      authenticate: true
     });
 }

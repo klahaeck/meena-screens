@@ -12,13 +12,14 @@ import _ from 'lodash';
 
 export class ScreensController {
   /*@ngInject*/
-  constructor($http, $scope, socket, $uibModal, Screen) {
+  constructor($http, $scope, Auth, socket, $uibModal, Screen) {
     this.$http = $http;
     this.socket = socket;
     this.$uibModal = $uibModal;
     this.Screen = Screen;
     this.screens = [];
     this.active = false;
+    this.isLoggedIn = Auth.isLoggedInSync;
 
     $scope.$on('$destroy', function() {
       socket.unsyncUpdates('screens');
@@ -62,7 +63,7 @@ export class ScreensController {
   addScreen() {
     this.openModal('add', {
       name: '',
-      active: true
+      flashColor: ''
     });
   }
 

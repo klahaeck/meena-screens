@@ -14,11 +14,14 @@ export default function seedDatabaseIfNeeded() {
     Screen.find({}).remove()
       .then(() => {
         let screen = Screen.create({
-          name: 'red'
+          name: 'red',
+          flashColor: '#FF0000'
         }, {
-          name: 'green'
+          name: 'green',
+          flashColor: '#00FF00'
         }, {
-          name: 'blue'
+          name: 'blue',
+          flashColor: '#0000FF'
         });
         return screen;
       })
@@ -35,8 +38,8 @@ export default function seedDatabaseIfNeeded() {
         User.create({
           provider: 'local',
           role: 'admin',
-          name: 'Kla',
-          email: 'kla.haeck@gmail.com',
+          name: 'Admin',
+          email: 'admin@example.com',
           password: 'admin'
         })
         .then(() => console.log('finished populating users'))

@@ -1,16 +1,18 @@
 <div class="container">
-  <button type="button" class="btn btn-primary" ng-click="$ctrl.addScreen()">Add Screen</button>
+  <button type="button" class="btn btn-primary" ng-click="$ctrl.addScreen()" ng-if="$ctrl.isLoggedIn()">Add Screen</button>
   <table class="table table-striped">
     <thead>
       <tr>
         <th>Name</th>
-        <th class="text-right">Tools</th>
+        <th>Flash Color</th>
+        <th class="text-right" ng-if="$ctrl.isLoggedIn()">Tools</th>
       </tr>
     </thead>
     <tbody>
       <tr ng-repeat="screen in $ctrl.screens" ng-class="{'danger':!screen.active}">
         <td><a ui-sref="screens-detail({id:screen._id})">{{screen.name || screen._id}}</a></td>
-        <td class="text-right">
+        <td><span style="color:{{screen.flashColor}}">{{screen.flashColor}}</span></td>
+        <td class="text-right" ng-if="$ctrl.isLoggedIn()">
           <button type="button" class="btn btn-xs" ng-class="{'btn-success':screen.active, 'btn-danger':!screen.active}" ng-click="$ctrl.toggleActive(screen)">active</button>
           <button type="button" class="btn btn-xs btn-warning" ng-click="$ctrl.editScreen(screen)">edit</button>
           <button type="button" class="btn btn-xs btn-danger" ng-click="$ctrl.deleteScreen(screen)">destroy</button>
