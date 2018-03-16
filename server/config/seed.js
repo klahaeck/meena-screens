@@ -5,7 +5,6 @@
 
 'use strict';
 import Screen from '../api/screen/screen.model';
-import Idle from '../api/idle/idle.model';
 import Submission from '../api/submission/submission.model';
 import User from '../api/user/user.model';
 import config from './environment/';
@@ -27,11 +26,6 @@ export default function seedDatabaseIfNeeded() {
       .catch(err => console.log('error populating screens', err));
     
     Submission.find({}).remove()
-      .exec();
-      // .then(() => console.log('finished populating things'))
-      // .catch(err => console.log('error populating things', err));
-
-    Idle.find({}).remove()
       .exec();
       // .then(() => console.log('finished populating things'))
       // .catch(err => console.log('error populating things', err));

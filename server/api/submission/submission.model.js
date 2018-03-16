@@ -25,13 +25,17 @@ var SubmissionSchema = new mongoose.Schema({
   screen: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Screen'
+  },
+  idle: {
+    type: Boolean,
+    default: false
   }
 }, {
   timestamps: true,
   usePushEach: true
 });
 
-function saveScreen(screen, submissionId) {
+export function saveScreen(screen, submissionId) {
   if(screen.submissions.length >= MAX_SUBMISSIONS) {
     screen.submissions.shift();
   }
@@ -42,17 +46,18 @@ function saveScreen(screen, submissionId) {
 SubmissionSchema.pre('save', function(next) {
   let self = this;
 
-  Screen.findOne({ active: true, submissions: [] })
+  if(!self.idle) {
+    Screen.findOne({ active: true, submissions: [] })
     .then(function(screen) {
       if(screen) {
         self.screen = screen._id;
         next();
       } else {
-        Screen.count().exec(function (err, count) {
+        Screen.count({ active: true }).exec(function (err, count) {
           if(err) console.warn(err);
           var random = Math.floor(Math.random() * count);
 
-          Screen.findOne().skip(random)
+          return Screen.findOne({ active: true }).skip(random)
             .then(function(randomScreen) {
               self.screen = randomScreen._id;
               next();
@@ -66,38 +71,46 @@ SubmissionSchema.pre('save', function(next) {
     .catch(function(err) {
       console.warn(err);
     });
+  } else {
+    next();
+  }
 });
 
 SubmissionSchema.post('save', function(doc) {
-  Screen.findOne(doc.screen)
-    .then(function(screen) {
-      if(screen) {
-        saveScreen(screen, doc._id);
-        // Screen.update({ _id: screen._id }, { $push: { submissions: self._id } }).then(next);
-      }
-    })
-    .catch(function(err) {
-      console.warn(err);
-    });
+  if(!doc.idle) {
+    Screen.findOne({active: true, _id:doc.screen})
+      .then(function(screen) {
+        if(screen) {
+          saveScreen(screen, doc._id);
+          return null;
+          // Screen.update({ _id: screen._id }, { $push: { submissions: self._id } }).then(next);
+        }
+      })
+      .catch(function(err) {
+        console.warn(err);
+      });
+  }
 });
 
 SubmissionSchema.pre('remove', function(next) {
-  // fires the screen socket event for screens
-  Screen.find({ submissions: this._id}).then(screens => {
-    screens.forEach(screen => {
-      const index = screen.submissions.indexOf(this._id);
-      if (index !== -1) {
-        screen.submissions.splice(index, 1);
-      }
-      screen.save();
+  if(!this.idle) {
+    // fires the screen socket event for screens
+    Screen.find({ submissions: this._id}).then(screens => {
+      screens.forEach(screen => {
+        const index = screen.submissions.indexOf(this._id);
+        if (index !== -1) {
+          screen.submissions.splice(index, 1);
+        }
+        screen.save();
+      });
     });
-  });
-
-  // Screen.update(
-  //   { submissions : this._id}, 
-  //   { $pull: { submissions: this._id } },
-  //   { multi: true })  //if reference exists in multiple documents 
-  // .exec();
+    
+    // Screen.update(
+    //   { submissions : this._id}, 
+    //   { $pull: { submissions: this._id } },
+    //   { multi: true })  //if reference exists in multiple documents 
+    // .exec();
+  }
   
   next();
 });

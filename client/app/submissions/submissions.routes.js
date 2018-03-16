@@ -4,7 +4,7 @@ export default function($stateProvider) {
   'ngInject';
   $stateProvider
     .state('submissions', {
-      url: '/submissions',
+      url: '/images',
       template: '<submissions></submissions>',
       authenticate: 'admin'
     });

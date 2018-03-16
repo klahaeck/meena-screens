@@ -16,9 +16,9 @@ function onConnect(socket) {
   });
 
   // Insert sockets below
-  require('../api/idle/idle.socket').register(socket);
   require('../api/screen/screen.socket').register(socket);
   require('../api/submission/submission.socket').register(socket);
+  require('../components/schedule/socket').register(socket);
 }
 
 export default function(socketio) {

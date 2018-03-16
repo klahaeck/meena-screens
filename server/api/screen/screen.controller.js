@@ -72,7 +72,12 @@ export function index(req, res) {
 
 // Gets a single Screen from the DB
 export function show(req, res) {
-  return Screen.findById(req.params.id).populate('submissions')
+  return Screen.findById(req.params.id).populate({
+    path: 'submissions',
+    match: { active: true }
+    // select: '-_id',
+    // options: { limit: 5 }
+  })
     .exec()
     .then(handleEntityNotFound(res))
     .then(respondWithResult(res))

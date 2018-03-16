@@ -12,11 +12,13 @@ import _ from 'lodash';
 
 export class ScreensController {
   /*@ngInject*/
-  constructor($http, $scope, socket, $uibModal) {
+  constructor($http, $scope, socket, $uibModal, Screen) {
     this.$http = $http;
     this.socket = socket;
     this.$uibModal = $uibModal;
+    this.Screen = Screen;
     this.screens = [];
+    this.active = false;
 
     $scope.$on('$destroy', function() {
       socket.unsyncUpdates('screens');
@@ -36,9 +38,7 @@ export class ScreensController {
       template: require('./modal-new-screen.html'),
       controller: ['$uibModalInstance', '$scope', 'Screen', function($uibModalInstance, $scope, Screen) {
         $scope.screen = _.clone(screen);
-        console.log($scope.screen);
         delete $scope.screen.__v;
-        console.log($scope.screen);
         $scope.submit = function() {
           if (action === 'add') {
             Screen.save($scope.screen, () => {
@@ -46,14 +46,17 @@ export class ScreensController {
             });
           } else {
             Screen.update({id:$scope.screen._id}, $scope.screen, () => {
-              $uibModalInstance.close();
+              $uibModalInstance.close($scope.screen);
             });
           }
         };
       }],
       size: 'lg'
     });
-    modalInstance.result.then(function() {}, function() {});
+    modalInstance.result.then(screen => {
+      // console.log(screen);
+      this.updateScreen(screen);
+    }, function() {});
   }
 
   addScreen() {
@@ -65,6 +68,20 @@ export class ScreensController {
 
   editScreen(screen) {
     this.openModal('edit', screen);
+  }
+
+  updateScreen(screen) {
+    const screenIndex = this.screens.findIndex(screen => screen._id == screen._id);
+    this.screens[screenIndex] = screen;
+  }
+
+  toggleActive(screen) {
+    delete screen.__v;
+    screen.active = !screen.active;
+    this.Screen.update({id:screen._id}, screen, response => {
+      screen = response;
+      // this.updateScreen(response);
+    });
   }
 
   deleteScreen(screen) {
@@ -111,7 +128,8 @@ export class ScreensDetailController {
       this.screen = screen;
       this.$timeout(() => {
         this.setImages();
-      }, 1000);
+        this.$scope.$broadcast('NEW_IMAGE');
+      }, 500);
     }
   }
 
@@ -144,6 +162,19 @@ export default angular.module('screensApp.screens', [uiRouter])
   .component('screen', {
     template: require('./screens-detail.html'),
     controller: ScreensDetailController
+  })
+  .directive('colorOverlay', function($animate) {
+    return {
+      restrict: 'C',
+      scope: {},
+      link: function(scope, element, attrs) {
+        scope.$on('NEW_IMAGE', function() {
+          $animate.addClass(element, 'flash').then(function () {
+            $animate.removeClass(element, 'flash');
+          });
+        });
+      }
+    };
   })
   // .animation('.layer', layer)
   .name;

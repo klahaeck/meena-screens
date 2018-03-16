@@ -11,6 +11,10 @@ var ScreenSchema = new mongoose.Schema({
     type: Boolean,
     default: true
   },
+  flashColor: {
+    type: String,
+    default: '#FFFFFF'
+  },
   submissions: [{
     type: mongoose.Schema.ObjectId,
     ref: 'Submission'

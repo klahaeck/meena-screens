@@ -3,8 +3,14 @@
     <h3 class="modal-title" id="modal-title">I'm a modal!</h3>
   </div> -->
   <div class="modal-body" id="modal-body">
-    <input type="string" class="form-control" ng-model="screen.name" />
-    <button type="button" class="btn btn-primary" ng-model="screen.active" uib-btn-checkbox>Active</button>
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="string" class="form-control" id="name" placeholder="Name" ng-model="screen.name">
+    </div>
+    <div class="form-group">
+      <label for="flashcolor">Flash Color</label>
+      <input type="string" class="form-control" id="flashcolor" placeholder="Flash Color" ng-model="screen.flashColor">
+    </div>
   </div>
   <div class="modal-footer">
     <button class="btn btn-warning" type="button" ng-click="$dismiss()">Cancel</button>

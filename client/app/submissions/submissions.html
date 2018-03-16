@@ -1,33 +1,72 @@
 <div class="container">
-  <button class="btn btn-lg btn-primary btn-block" ng-if="!$ctrl.submitted" ngf-select="$ctrl.upload($file)" ngf-accept="'image/*'" ngf-pattern="'image/*'" ngf-max-size="'5MB'" ngf-fix-orientation="true">Upload a photo</button>
+  <div uib-alert ng-repeat="alert in $ctrl.alerts" ng-class="'alert-' + (alert.type || 'warning')" close="$ctrl.closeAlert($index)" dismiss-on-timeout="{{alert.type === 'success' ? 3000 : undefined}}">{{alert.msg}}</div>
+
   <uib-progressbar ng-if="$ctrl.submitted && $ctrl.progressPercentage < 100" value="$ctrl.progressPercentage"></uib-progressbar>
-  <h3 ng-if="$ctrl.msg" class="text-{{$ctrl.msg.class}}">{{$ctrl.msg.text}}</h3>
-  <table class="table table-striped" ng-if="$ctrl.submissions.length">
-    <thead>
-      <tr>
-        <th>Image</th>
-        <th>Effect</th>
-        <th>Submitted At</th>
-        <th class="text-right">Tools</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr ng-repeat="submission in $ctrl.submissions" ng-class="{'danger':!submission.active}">
-        <td>
-          <a href="#" ng-click="$ctrl.showImage(submission, 'large')">
-            <img ng-src="{{$ctrl.assetPrefix}}{{submission.file.path}}/{{submission.file.versions.thumb}}" class="img-responsive" width="100">
-          </a>
-        </td>
-        <td>
-          <a href="#" ng-click="$ctrl.showImage(submission, 'lines')">
-            <img ng-src="{{$ctrl.assetPrefix}}{{submission.file.path}}/{{submission.file.versions.linesThumb}}" class="img-responsive" width="100">
-          </a>
-        </td>
-        <td>{{submission.createdAt | date : 'medium'}}</td>
-        <td class="text-right">
-          <button type="button" class="btn btn-xs btn-danger" ng-click="$ctrl.deleteSubmission(submission)">destroy</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  
+  <uib-tabset active="activeJustified" justified="true">
+    <uib-tab index="0" heading="Submissions">
+      <button class="btn btn-lg btn-primary btn-block" ng-if="!$ctrl.submitted" ngf-select="$ctrl.upload($file, false)" ngf-accept="'image/*'" ngf-pattern="'image/*'" ngf-max-size="'5MB'" ngf-fix-orientation="true">Upload a photo</button>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Effect</th>
+            <th>Submitted At</th>
+            <th class="text-right">Tools</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="submission in $ctrl.getSubmissions()" ng-class="{'danger':!submission.active}">
+            <td>
+              <a href="#" ng-click="$ctrl.showImage(submission, 'large')">
+                <img ng-src="{{$ctrl.assetPrefix}}{{submission.file.path}}/{{submission.file.versions.thumb}}" class="img-responsive" width="100">
+              </a>
+            </td>
+            <td>
+              <a href="#" ng-click="$ctrl.showImage(submission, 'lines')">
+                <img ng-src="{{$ctrl.assetPrefix}}{{submission.file.path}}/{{submission.file.versions.linesThumb}}" class="img-responsive" width="100">
+              </a>
+            </td>
+            <td>{{submission.createdAt | date : 'medium'}}</td>
+            <td class="text-right">
+              <button type="button" class="btn btn-xs" ng-class="{'btn-success':submission.active, 'btn-danger':!submission.active}" ng-click="$ctrl.toggleActive(submission)">active</button>
+              <button type="button" class="btn btn-xs btn-danger" ng-click="$ctrl.deleteSubmission(submission)">destroy</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </uib-tab>
+    <uib-tab index="1" heading="Idle Images">
+      <button class="btn btn-lg btn-primary btn-block" ng-if="!$ctrl.submitted" ngf-select="$ctrl.upload($file, true)" ngf-accept="'image/*'" ngf-pattern="'image/*'" ngf-max-size="'5MB'" ngf-fix-orientation="true">Upload an idle image</button>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Effect</th>
+            <th>Submitted At</th>
+            <th class="text-right">Tools</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="image in $ctrl.getIdleImages()" ng-class="{'danger':!image.active}">
+            <td>
+              <a href="#" ng-click="$ctrl.showImage(image, 'large')">
+                <img ng-src="{{$ctrl.assetPrefix}}{{image.file.path}}/{{image.file.versions.thumb}}" class="img-responsive" width="100">
+              </a>
+            </td>
+            <td>
+              <a href="#" ng-click="$ctrl.showImage(image, 'lines')">
+                <img ng-src="{{$ctrl.assetPrefix}}{{image.file.path}}/{{image.file.versions.linesThumb}}" class="img-responsive" width="100">
+              </a>
+            </td>
+            <td>{{image.createdAt | date : 'medium'}}</td>
+            <td class="text-right">
+              <button type="button" class="btn btn-xs" ng-class="{'btn-success':image.active, 'btn-danger':!image.active}" ng-click="$ctrl.toggleActive(image)">active</button>
+              <button type="button" class="btn btn-xs btn-danger" ng-click="$ctrl.deleteSubmission(image)">destroy</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </uib-tab>
+  </uib-tabset>
 </div>

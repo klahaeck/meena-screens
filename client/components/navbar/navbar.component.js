@@ -12,9 +12,7 @@ export class NavbarComponent {
     this.getCurrentUser = Auth.getCurrentUserSync;
     this.isCollapsed = true;
     this.menu = [
-      // { title: 'Upload', state: 'main' },
-      { title: 'Submissions', state: 'submissions' },
-      { title: 'Idle', state: 'idles' },
+      { title: 'Images', state: 'submissions' },
       { title: 'Screens', state: 'screens' }
     ];
   }

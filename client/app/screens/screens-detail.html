@@ -1,3 +1,4 @@
 <!-- <canvas id="canvas" class="canvas"></canvas> -->
 <div class="layer layer-bg"></div>
 <div ng-repeat="image in images" class="layer layer-image layer-image-{{image.index}}" ng-style="{'background-image': 'url({{image.path}})'}"></div>
+<div class="color-overlay" ng-style="{'background-color':$ctrl.screen.flashColor}"></div>

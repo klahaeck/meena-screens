@@ -5,17 +5,19 @@ import routes from './submissions.routes';
 
 export class SubmissionsController {
   /*@ngInject*/
-  constructor($window, $http, $timeout, $scope, socket, $uibModal, Upload, Util) {
+  constructor($window, $http, $timeout, $scope, socket, $uibModal, Submission, Upload, Util) {
     this.$window = $window;
     this.$http = $http;
     this.$timeout = $timeout;
     this.socket = socket;
     this.$uibModal = $uibModal;
+    this.Submission = Submission;
     this.Upload = Upload;
     this.Util = Util;
     this.submitted = false;
     this.progressPercentage = 0;
     this.submissions = [];
+    this.alerts = [];
 
     this.assetPrefix = Util.getAssetPrefix();
 
@@ -32,39 +34,50 @@ export class SubmissionsController {
       });
   }
 
-  upload(file) {
+  getSubmissions() {
+    return this.submissions.filter(submission => !submission.idle);
+  }
+
+  getIdleImages() {
+    return this.submissions.filter(submission => submission.idle);
+  }
+
+  upload(file, idle) {
     this.submitted = true;
     this.Upload.upload({
       url: '/api/submissions',
-      data: { file }
+      data: { file, idle }
     })
     .then(() => {
-      this.msg = {
-        class: 'success',
-        text: 'Your photo has been uploaded!'
-      };
-      this.$timeout(() => {
-        this.submitted = false;
-        this.msg = null;
-      }, 3000);
-      // console.log(`Success ${resp.config.data.file.name} uploaded. Response: ${resp.data}`);
+      this.alerts.push({type: 'success', msg: 'Your photo has been uploaded!'});
+      this.submitted = false;
     }, resp => {
       console.warn(`Error status: ${resp.status}`);
+      this.alerts.push({type: 'danger', msg: resp.status});
       this.submitted = false;
-      this.msg = {
-        class: 'danger',
-        text: resp.status
-      };
     }, evt => {
       this.progressPercentage = parseInt(100.0 * evt.loaded / evt.total, 10);
-      // console.log(`progress: ${progressPercentage}% ${evt.config.data.file.name}`);
     })
     .catch(resp => {
+      this.alerts.push({type: 'danger', msg: resp.status});
       this.submitted = false;
-      this.msg = {
-        class: 'danger',
-        text: resp.status
-      };
+    });
+  }
+
+  closeAlert(index) {
+    this.alerts.splice(index, 1);
+  }
+
+  updateSubmission(submission) {
+    const submissionIndex = this.submissions.findIndex(submission => submission._id == submission._id);
+    this.submissions[submissionIndex] = submission;
+  }
+
+  toggleActive(submission) {
+    delete submission.__v;
+    submission.active = !submission.active;
+    this.Submission.update({id:submission._id}, submission, response => {
+      submission = response;
     });
   }
 
@@ -83,7 +96,6 @@ export class SubmissionsController {
       size: 'lg',
       resolve: {
         imagePath() {
-          // console.log(`${submission.file.path}/${submission.file.versions[version]}`);
           return `${submission.file.path}/${submission.file.versions[version]}`;
         }
       }
@@ -96,6 +108,11 @@ export class SubmissionsController {
 
 export default angular.module('screensApp.submissions', [uiRouter])
   .config(routes)
+  .service('Submission', function ($resource) {
+    return $resource('/api/submissions/:id', {id:'@_id'}, {
+      'update': { method:'PUT' }
+    });
+  })
   .component('submissions', {
     template: require('./submissions.html'),
     controller: SubmissionsController

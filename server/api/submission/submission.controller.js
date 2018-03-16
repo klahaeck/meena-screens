@@ -13,6 +13,7 @@
 import jsonpatch from 'fast-json-patch';
 import Submission from './submission.model';
 import { process } from '../../components/image-processing';
+import _ from 'lodash';
 
 function respondWithResult(res, statusCode) {
   statusCode = statusCode || 200;
@@ -82,8 +83,9 @@ export function show(req, res) {
 
 // Creates a new Submission in the DB
 export function create(req, res) {
+  req.body.idle = req.body.idle === 'true';
   process(req.files.file)
-    .then(submission => Submission.create(submission))
+    .then(fileData => Submission.create(_.extend(req.body, fileData)))
     .then(respondWithResult(res, 201))
     .catch(handleError(res));
 }
