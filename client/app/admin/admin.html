@@ -5,6 +5,7 @@
       <tr>
         <th>Name</th>
         <th>Email</th>
+        <th>Role</th>
         <th class="text-right">Tools</th>
       </tr>
     </thead>
@@ -12,6 +13,7 @@
       <tr ng-repeat="user in admin.users">
         <td>{{user.name}}</td>
         <td>{{user.email}}</td>
+        <td>{{user.role}}</td>
         <td class="text-right">
           <button type="button" class="btn btn-xs btn-danger" ng-click="admin.delete(user)">delete</button>
         </td>

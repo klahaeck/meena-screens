@@ -26,6 +26,7 @@ export function index(req, res) {
   return User.find({}, '-salt -password').exec()
     .then(users => {
       res.status(200).json(users);
+      return null;
     })
     .catch(handleError(res));
 }
@@ -43,6 +44,7 @@ export function create(req, res) {
         expiresIn: 60 * 60 * 5
       });
       res.json({ token });
+      return null;
     })
     .catch(validationError(res));
 }
