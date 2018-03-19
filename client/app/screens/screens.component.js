@@ -94,12 +94,13 @@ export class ScreensController {
 
 export class ScreensDetailController {
   /*@ngInject*/
-  constructor($http, $stateParams, $scope, $timeout, socket) {
+  constructor($http, $stateParams, $scope, $timeout, Util, socket) {
     this.$http = $http;
     this.socket = socket;
     this.$stateParams = $stateParams;
     this.$timeout = $timeout;
     this.$scope = $scope;
+    this.assetPrefix = Util.getAssetPrefix();
 
     this.maxImages = 3;
 
@@ -136,9 +137,9 @@ export class ScreensDetailController {
 
   setImages() {
     const reversed = this.screen.submissions.slice().reverse();
-    this.$scope.images = this.screen.submissions.map(function(submission) {
+    this.$scope.images = this.screen.submissions.map(submission => {
       const index = reversed.indexOf(submission);
-      return {path:`${submission.file.path}/${submission.file.versions.lines}`, index};
+      return {path:`${this.assetPrefix}${submission.file.path}/${submission.file.versions.lines}`, index};
     });
   }
 

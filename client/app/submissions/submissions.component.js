@@ -13,7 +13,6 @@ export class SubmissionsController {
     this.$uibModal = $uibModal;
     this.Submission = Submission;
     this.Upload = Upload;
-    this.Util = Util;
     this.submitted = false;
     this.progressPercentage = 0;
     this.submissions = [];
@@ -88,6 +87,7 @@ export class SubmissionsController {
   }
 
   showImage(submission, version) {
+    const assetPrefix = this.assetPrefix;
     var modalInstance = this.$uibModal.open({
       template: require('../../components/modal-image/modal-image.html'),
       controller: ['$scope', 'imagePath', function($scope, imagePath) {
@@ -96,7 +96,7 @@ export class SubmissionsController {
       size: 'lg',
       resolve: {
         imagePath() {
-          return `${submission.file.path}/${submission.file.versions[version]}`;
+          return `${assetPrefix}${submission.file.path}/${submission.file.versions[version]}`;
         }
       }
     });

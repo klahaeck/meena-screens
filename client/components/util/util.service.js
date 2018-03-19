@@ -64,9 +64,9 @@ export function UtilService($window, $location) {
     },
 
     getAssetPrefix() {
-      const protocal = $location.protocol();
+      // const protocal = $location.protocol();
       const host = $location.host();
-      const port = $location.port();
+      // const port = $location.port();
       if(host === 'localhost') {
         return '/';
       } else {

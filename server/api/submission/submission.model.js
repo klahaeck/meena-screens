@@ -53,7 +53,7 @@ SubmissionSchema.pre('save', function(next) {
         self.screen = screen._id;
         next();
       } else {
-        Screen.count({ active: true }).exec(function (err, count) {
+        return Screen.count({ active: true }).exec(function (err, count) {
           if(err) console.warn(err);
           var random = Math.floor(Math.random() * count);
 
