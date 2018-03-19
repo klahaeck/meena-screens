@@ -10,5 +10,8 @@
     "rules": {
       "no-console": ["error", { "allow": ["warn", "error", "log"] }],
       "no-trailing-spaces": 0
+    },
+    "globals": {
+      "_": true
     }
 }

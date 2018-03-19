@@ -40,9 +40,7 @@ function removeEntity(res) {
   return function(entity) {
     if(entity) {
       return entity.remove()
-        .then(() => {
-          return res.status(204).end();
-        });
+        .then(() => res.status(204).end());
     }
   };
 }

@@ -73,7 +73,7 @@ export class SubmissionsController {
   }
 
   toggleActive(submission) {
-    delete submission.__v;
+    Reflect.deleteProperty(submission, '__v');
     submission.active = !submission.active;
     this.Submission.update({id:submission._id}, submission, response => {
       submission = response;
