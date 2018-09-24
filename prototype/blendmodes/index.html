@@ -1,0 +1,58 @@
+<html>
+  <head>
+    <meta charset="UTF-8"> 
+    <style>
+      .color-overlay {
+        width: 100%;
+        height: 100%;
+        display: block;
+        background-color: red;
+        mix-blend-mode: multiply;
+      }
+
+      .image-module {
+        mix-blend-mode: screen;
+      }
+
+      .image-module-0 {
+        opacity: .8
+      }
+
+      .image-module-1 {
+        opacity: 1;
+      }
+
+      .image {
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        position: absolute;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: 50%;
+      }
+    
+      .image-0 {
+        background-image: url('lines-2.jpg');
+        opacity: 1;
+      }
+
+      .image-1 {
+        background-image: url('lines-3.jpg');
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="image-module image-module-0">
+      <div class="image image-1"></div>
+    </div>
+    <div class="image-module image-module-1">
+      <div class="image image-0"></div>
+      <div class="color-overlay"></div>
+    </div>
+  </body>
+</html>
