@@ -7,5 +7,5 @@
 <div class="container">
   <button class="btn btn-lg btn-primary btn-block" ng-if="!$ctrl.submitted" ngf-select="$ctrl.upload($file)" ngf-accept="'image/*'" ngf-pattern="'image/*'" ngf-max-size="'5MB'" ngf-fix-orientation="true">Upload a photo</button>
   <uib-progressbar ng-if="$ctrl.submitted && $ctrl.progressPercentage < 100" value="$ctrl.progressPercentage"></uib-progressbar>
-  <!-- <h3 ng-if="$ctrl.msg" class="text-{{$ctrl.msg.class}}">{{$ctrl.msg.text}}</h3> -->
+  <h3 ng-if="$ctrl.msg" class="text-{{$ctrl.msg.class}}">{{$ctrl.msg.text}}</h3>
 </div>

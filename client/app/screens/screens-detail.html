@@ -2,5 +2,5 @@
 <div class="layer layer-bg"></div>
 <div ng-repeat="image in images" class="layer layer-group layer-group-{{image.index}}">
   <div class="layer layer-image" ng-style="{'background-image': 'url({{image.path}})'}"></div>
-  <div class="layer layer-color-overlay" ng-style="{'background-color':$ctrl.screen.flashColor}"></div>
+  <div class="layer layer-color-overlay" ng-style="{'background-color':$ctrl.screen.flashColor}" ng-class="{flash: image.index === 0}"></div>
 </div>

@@ -130,7 +130,7 @@ export class ScreensDetailController {
       this.screen = screen;
       this.$timeout(() => {
         this.setImages();
-        this.$scope.$broadcast('NEW_IMAGE');
+        // this.$scope.$broadcast('NEW_IMAGE');
       }, 500);
     }
   }
@@ -143,11 +143,11 @@ export class ScreensDetailController {
     });
   }
 
-  getIndexClass(image) {
-    const reversedImages = this.$scope.images.reverse();
-    const index = reversedImages.findIndex(image);
-    return `layer-image-${index}`;
-  }
+  // getIndexClass(image) {
+  //   const reversedImages = this.$scope.images.reverse();
+  //   const index = reversedImages.findIndex(image);
+  //   return `layer-image-${index}`;
+  // }
 }
 
 export default angular.module('screensApp.screens', [uiRouter])
@@ -165,19 +165,21 @@ export default angular.module('screensApp.screens', [uiRouter])
     template: require('./screens-detail.html'),
     controller: ScreensDetailController
   })
-  .directive('layerColorOverlay', function($animate) {
-    return {
-      restrict: 'C',
-      scope: {},
-      link: function(scope, element, attrs) {
-        scope.$on('NEW_IMAGE', function() {
-          // $animate.addClass(element, 'flash');
-          $animate.addClass(element, 'flash').then(function () {
-            $animate.removeClass(element, 'flash');
-          });
-        });
-      }
-    };
-  })
+  // .directive('layerColorOverlay', function($animate) {
+  //   return {
+  //     restrict: 'C',
+  //     scope: {},
+  //     link: function(scope, element, attrs) {
+  //       scope.$on('NEW_IMAGE', function() {
+  //         if (!element.hasClass('flash')) {
+  //           $animate.addClass(element, 'flash');
+  //         }
+  //         // $animate.addClass(element, 'flash').then(function () {
+  //         //   $animate.removeClass(element, 'flash');
+  //         // });
+  //       });
+  //     }
+  //   };
+  // })
   // .animation('.layer', layer)
   .name;

@@ -3,10 +3,10 @@ import schedule from 'node-schedule';
 import Submission, { saveScreen } from '../../api/submission/submission.model';
 import Screen from '../../api/screen/screen.model';
 
-const sechduleInterval = 5; //seconds
+const sechduleInterval = 8; //seconds
 const idleTime = 30; //seconds
 let timeouts = [];
-const maxTimeouts = 5;
+const maxTimeouts = 8;
 
 function removeTimeout(timeout) {
   const index = timeouts.indexOf(timeout);

@@ -14,6 +14,7 @@ export class MainController {
     // $scope.$on('$destroy', function() {
     //   socket.unsyncUpdates('submissions');
     // });
+    // this.upload = this.upload.bind(this);
   }
 
   upload(file) {

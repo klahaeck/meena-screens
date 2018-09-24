@@ -45,7 +45,7 @@ $layer_4_opacity: .3;
 }
 
 .layer-group-0.ng-animate {
-  transition: 3s linear all;
+  transition: 2s linear all;
 }
 .layer-group-0.ng-enter {
   opacity: 0;
@@ -63,7 +63,7 @@ $layer_4_opacity: .3;
 
 
 .layer-group-1.ng-animate {
-  transition: 3s linear all;
+  transition: 2s linear all;
 }
 .layer-group-1.ng-enter {
   opacity: 0;
@@ -81,7 +81,7 @@ $layer_4_opacity: .3;
 
 
 .layer-group-2.ng-animate {
-  transition: 3s linear all;
+  transition: 2s linear all;
 }
 .layer-group-2.ng-enter {
   opacity: 0;
@@ -99,7 +99,7 @@ $layer_4_opacity: .3;
 
 
 .layer-group-3.ng-animate {
-  transition: 3s linear all;
+  transition: 2s linear all;
 }
 .layer-group-3.ng-enter {
   opacity: 0;
@@ -117,7 +117,7 @@ $layer_4_opacity: .3;
 
 
 .layer-group-4.ng-animate {
-  transition: 3s linear all;
+  transition: 2s linear all;
 }
 .layer-group-4.ng-enter {
   opacity: 0;
@@ -141,11 +141,11 @@ $layer_4_opacity: .3;
 
 @keyframes flash {
   0% {
-    opacity: 0;
+    opacity: 1;
   }
 
-  5% {
-    opacity: 100;
+  80% {
+    opacity: 1;
   }
 
   100% {
@@ -154,5 +154,5 @@ $layer_4_opacity: .3;
 }
 
 .flash {
-  animation: flash 5s ease-out;
+  animation: flash 8s ease-out;
 }
