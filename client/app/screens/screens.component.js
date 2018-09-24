@@ -165,12 +165,13 @@ export default angular.module('screensApp.screens', [uiRouter])
     template: require('./screens-detail.html'),
     controller: ScreensDetailController
   })
-  .directive('colorOverlay', function($animate) {
+  .directive('layerColorOverlay', function($animate) {
     return {
       restrict: 'C',
       scope: {},
       link: function(scope, element, attrs) {
         scope.$on('NEW_IMAGE', function() {
+          // $animate.addClass(element, 'flash');
           $animate.addClass(element, 'flash').then(function () {
             $animate.removeClass(element, 'flash');
           });
