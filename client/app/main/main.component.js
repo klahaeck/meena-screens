@@ -4,8 +4,9 @@ import routing from './main.routes';
 
 export class MainController {
   /*@ngInject*/
-  constructor($http, Upload, Util) {
+  constructor($http, $timeout, Upload, Util) {
     this.$http = $http;
+    this.$timeout = $timeout;
     this.Upload = Upload;
     this.submitted = false;
     this.progressPercentage = 0;
@@ -27,8 +28,9 @@ export class MainController {
         data: { file }
       })
       .then(resp => {
-        console.log(resp.data);
-        this.backgroundImage = `${resp.data.file.path}/${resp.data.file.versions.lines}`;
+        this.$timeout(() => {
+          this.backgroundImage = `${resp.data.file.path}/${resp.data.file.versions.lines}`;
+        }, 2000);
         // this.msg = {
         //   class: 'success',
         //   text: 'Your photo has been uploaded!'
