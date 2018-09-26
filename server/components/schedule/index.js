@@ -3,8 +3,8 @@ import schedule from 'node-schedule';
 import Submission, { saveScreen } from '../../api/submission/submission.model';
 import Screen from '../../api/screen/screen.model';
 
-const sechduleInterval = 8; //seconds
-const idleTime = 30; //seconds
+const sechduleInterval = 30; //seconds
+const idleTime = 60; //seconds
 let timeouts = [];
 const maxTimeouts = 8;
 
