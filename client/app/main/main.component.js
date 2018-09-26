@@ -4,12 +4,14 @@ import routing from './main.routes';
 
 export class MainController {
   /*@ngInject*/
-  constructor($http, Upload) {
+  constructor($http, Upload, Util) {
     this.$http = $http;
     this.Upload = Upload;
     this.submitted = false;
     this.progressPercentage = 0;
     // this.socket = socket;
+
+    this.assetPrefix = Util.getAssetPrefix();
 
     // $scope.$on('$destroy', function() {
     //   socket.unsyncUpdates('submissions');
