@@ -3,11 +3,12 @@
 <header>
   <div class="container">
     <!-- <h1>Submit your photo</h1> -->
+    <p>Think of an image you recently felt connected to, from a user outside your following network.</p>
   </div>
 </header>
 
 <div class="container">
-  <button class="btn btn-lg btn-primary btn-block" ng-disabled="$ctrl.submitted" ngf-select="$ctrl.upload($file)" ngf-accept="'image/*'" ngf-pattern="'image/*'" ngf-max-size="'5MB'" ngf-fix-orientation="true">Upload a photo</button>
+  <button class="btn btn-lg btn-primary btn-block btn-seed" ng-disabled="$ctrl.submitted" ngf-select="$ctrl.upload($file)" ngf-accept="'image/*'" ngf-pattern="'image/*'" ngf-max-size="'5MB'" ngf-fix-orientation="true">Upload that seed image here</button>
   <uib-progressbar ng-if="$ctrl.submitted && $ctrl.progressPercentage < 100" value="$ctrl.progressPercentage"></uib-progressbar>
   <h3 ng-if="$ctrl.msg" class="text-{{$ctrl.msg.class}}">{{$ctrl.msg.text}}</h3>
 </div>
