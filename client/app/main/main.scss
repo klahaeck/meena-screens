@@ -48,4 +48,10 @@
   background: #00FF00;
   border: #00FF00;
   color: #454545;
+
+  &:hover {
+    background: #109e10;
+    border: #109e10;
+    color: #454545;
+  }
 }
